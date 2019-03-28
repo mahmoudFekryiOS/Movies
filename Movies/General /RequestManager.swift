@@ -11,7 +11,7 @@ import Alamofire
 import SystemConfiguration
 class RequestManager {
     
-    private static func isConnectedToNetwork() -> Bool
+    static func isConnectedToNetwork() -> Bool
     {
         var zeroAddress = sockaddr_in()
         zeroAddress.sin_len = UInt8(MemoryLayout.size(ofValue: zeroAddress))
@@ -32,12 +32,11 @@ class RequestManager {
         return (isReachable && !needsConnection)
     }
     
-    private static func AlamofireRequest(serviceURL:String , httpMethod:HTTPMethod , parameters:[String:Any]?,headers: HTTPHeaders?  , handler: @escaping (Dictionary<String,Any>? , Bool, Bool?) -> ()) {
+    static func AlamofireRequest(serviceURL:String , httpMethod:HTTPMethod , parameters:[String:Any]?,headers: HTTPHeaders?  , handler: @escaping (Dictionary<String,Any>? , Bool, Bool?) -> ()) {
         
-        let url  = "\(Constants.baseUrl)"//"\(serviceURL)"
+        let url  = "\(Constants.baseUrl)\(serviceURL)"
         var header:HTTPHeaders = [:]
         header["Content-Type"] = "application/json"
-        //header["Authorization"] = "Bearer " + Constants.accessToken
         Alamofire.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers:header).responseJSON { response in
             print(url )
             switch (response.result) {
