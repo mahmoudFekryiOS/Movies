@@ -28,7 +28,7 @@ class PopularActorsVC: UIViewController {
         if RequestManager.isConnectedToNetwork(){
             Presentation.showLoading()
             print(pagingNum)
-            RequestManager.AlamofireRequest(serviceURL: url +  pagingNum, httpMethod: .get, parameters: nil , headers: nil){(responseJSON, isSuccess , isError) in
+            RequestManager.alamofireRequest(serviceURL: url +  pagingNum, httpMethod: .get, parameters: nil , headers: nil){(responseJSON, isSuccess , isError) in
                 Presentation.hideLoading()
                 if isSuccess{
                         self.total_pages = responseJSON!["total_pages"] as? Int ?? 0
@@ -91,7 +91,7 @@ extension PopularActorsVC:UICollectionViewDelegate,UICollectionViewDataSource,UI
 
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
+        self.performSegue(withIdentifier: "Details", sender: nil)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

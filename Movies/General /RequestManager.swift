@@ -32,12 +32,12 @@ class RequestManager {
         return (isReachable && !needsConnection)
     }
     
-    static func AlamofireRequest(serviceURL:String , httpMethod:HTTPMethod , parameters:[String:Any]?,headers: HTTPHeaders?  , handler: @escaping (Dictionary<String,Any>? , Bool, Bool?) -> ()) {
+    static func alamofireRequest(serviceURL:String , httpMethod:HTTPMethod , parameters:[String:Any]?,headers: HTTPHeaders?  , handler: @escaping (Dictionary<String,Any>? , Bool, Bool?) -> ()) {
         
         let url  = "\(Constants.baseUrl)\(serviceURL)"
         var header:HTTPHeaders = [:]
         header["Content-Type"] = "application/json"
-        Alamofire.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers:header).responseJSON { response in
+        Alamofire.request(url, method: httpMethod, parameters: parameters, encoding: JSONEncoding.default, headers:header).responseJSON { response in
             print(url )
             switch (response.result) {
             case .success:
@@ -53,6 +53,19 @@ class RequestManager {
                 handler(nil, false, true)
                 break
             }
+        }
+    }
+    
+    static func alamofireRequestJson(serviceURL:String , handler: @escaping (JSONEncoding? , Bool, Bool?) -> ()) {
+        let url  = "\(Constants.baseUrl)\(serviceURL)"
+    
+        Alamofire.request(url, method: .get, parameters: nil, encoding: JSONEncoding.default, headers:[:]).responseJSON { response in
+                if response.data != nil {
+                    let json = response.result.value
+                    handler(json as! JSONEncoding , true, nil)
+                }else{
+                    handler(nil, false,nil )
+                }
         }
     }
     
