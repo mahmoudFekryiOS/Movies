@@ -4,7 +4,7 @@
 //
 //  Created by Wei Wang on 16/1/6.
 //
-//  Copyright (c) 2019 Wei Wang <onevcat@gmail.com>
+//  Copyright (c) 2018 Wei Wang <onevcat@gmail.com>
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -134,6 +134,7 @@ extension KingfisherWrapper where Base: Image {
 
 // MARK: - Image Representation
 extension KingfisherWrapper where Base: Image {
+    // MARK: - PNG
     /// Returns PNG representation of `base` image.
     ///
     /// - Returns: PNG data of image.
@@ -152,7 +153,8 @@ extension KingfisherWrapper where Base: Image {
             #endif
         #endif
     }
-
+    
+    // MARK: - JPEG
     /// Returns JPEG representation of `base` image.
     ///
     /// - Parameter compressionQuality: The compression quality when converting image to JPEG data.
@@ -172,33 +174,17 @@ extension KingfisherWrapper where Base: Image {
             #endif
         #endif
     }
-
+    
+    // MARK: - GIF
     /// Returns GIF representation of `base` image.
     ///
     /// - Returns: Original GIF data of image.
     public func gifRepresentation() -> Data? {
         return animatedImageData
     }
-
-    /// Returns a data representation for `base` image, with the `format` as the format indicator.
-    ///
-    /// - Parameter format: The format in which the output data should be. If `unknown`, the `base` image will be
-    ///                     converted in the PNG representation.
-    /// - Returns: The output data representing.
-    public func data(format: ImageFormat) -> Data? {
-        let data: Data?
-        switch format {
-        case .PNG: data = pngRepresentation()
-        case .JPEG: data = jpegRepresentation(compressionQuality: 1.0)
-        case .GIF: data = gifRepresentation()
-        case .unknown: data = normalized.kf.pngRepresentation()
-        }
-
-        return data
-    }
 }
 
-// MARK: - Creating Images
+// MARK: - Create images from data
 extension KingfisherWrapper where Base: Image {
 
     /// Creates an animated image from a given data and options. Currently only GIF data is supported.
@@ -222,7 +208,7 @@ extension KingfisherWrapper where Base: Image {
         guard let animatedImage = GIFAnimatedImage(from: imageSource, for: info, options: options) else {
             return nil
         }
-        var image: Image?
+        let image: Image?
         if options.onlyFirstFrame {
             image = animatedImage.images.first
         } else {
@@ -235,7 +221,7 @@ extension KingfisherWrapper where Base: Image {
         return image
         #else
         
-        var image: Image?
+        let image: Image?
         if options.preloadAll || options.onlyFirstFrame {
             // Use `images` image if you want to preload all animated data
             guard let animatedImage = GIFAnimatedImage(from: imageSource, for: info, options: options) else {
@@ -310,9 +296,7 @@ extension KingfisherWrapper where Base: Image {
             kCGImageSourceShouldCacheImmediately: true,
             kCGImageSourceCreateThumbnailWithTransform: true,
             kCGImageSourceThumbnailMaxPixelSize: maxDimensionInPixels] as CFDictionary
-        guard let downsampledImage = CGImageSourceCreateThumbnailAtIndex(imageSource, 0, downsampleOptions) else {
-            return nil
-        }
+        let downsampledImage = CGImageSourceCreateThumbnailAtIndex(imageSource, 0, downsampleOptions)!
         return KingfisherWrapper.image(cgImage: downsampledImage, scale: scale, refImage: nil)
     }
 }

@@ -34,10 +34,10 @@ class RequestManager {
     
     private static func AlamofireRequest(serviceURL:String , httpMethod:HTTPMethod , parameters:[String:Any]?,headers: HTTPHeaders?  , handler: @escaping (Dictionary<String,Any>? , Bool, Bool?) -> ()) {
         
-        let url  = "\(Constants.BASE_URL)\(serviceURL)"
+        let url  = "\(Constants.baseUrl)"//"\(serviceURL)"
         var header:HTTPHeaders = [:]
         header["Content-Type"] = "application/json"
-        header["Authorization"] = "Bearer " + Constants.accessToken
+        //header["Authorization"] = "Bearer " + Constants.accessToken
         Alamofire.request(url, method: .post, parameters: parameters, encoding: JSONEncoding.default, headers:header).responseJSON { response in
             print(url )
             switch (response.result) {

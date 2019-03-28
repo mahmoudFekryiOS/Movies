@@ -1,24 +1,33 @@
 PODS:
   - Alamofire (4.8.1)
-  - Kingfisher (5.3.0)
+  - Kingfisher (5.0.0)
   - RappleProgressHUD (3.0.4)
 
 DEPENDENCIES:
   - Alamofire
-  - Kingfisher
+  - Kingfisher (from `https://github.com/onevcat/Kingfisher.git`, tag `5.0.0`)
   - RappleProgressHUD
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - Alamofire
-    - Kingfisher
     - RappleProgressHUD
+
+EXTERNAL SOURCES:
+  Kingfisher:
+    :git: https://github.com/onevcat/Kingfisher.git
+    :tag: 5.0.0
+
+CHECKOUT OPTIONS:
+  Kingfisher:
+    :git: https://github.com/onevcat/Kingfisher.git
+    :tag: 5.0.0
 
 SPEC CHECKSUMS:
   Alamofire: 16ce2c353fb72865124ddae8a57c5942388f4f11
-  Kingfisher: 4692c783ffb99e9e2e40a6eb3e518c3b96c6fa8c
+  Kingfisher: a6ee5c199745061379abf4126d5c388668fc1a39
   RappleProgressHUD: c57f20ee8e2965c6107aaf76b97ed0f33f00bc1d
 
-PODFILE CHECKSUM: 764c93a70e1bdb9ff348a6fd694a575ca9db94e3
+PODFILE CHECKSUM: d13fa191d5845b396b5c0438e1aedc3db1dd9f39
 
 COCOAPODS: 1.7.0.beta.1
