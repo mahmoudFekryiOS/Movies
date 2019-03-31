@@ -17,13 +17,22 @@ class PopularActorsVC: UIViewController {
     var searchActive = false
     var pagingNum = "1"
     var total_pages = 0
+    var selectedId = 0
+    var selectedName = ""
     var url = "person/popular?api_key=10bcaef3a966b28966417721e6bf53c5&language=en-US&page="
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupSearch()
         getPopularActors()
      }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let detailsVc = segue.destination as? DetailsVC
+        detailsVc?.actorId = self.selectedId
+        detailsVc?.actorNamre = self.selectedName
+    }
+
     func getPopularActors(){
         if RequestManager.isConnectedToNetwork(){
             Presentation.showLoading()
@@ -91,11 +100,13 @@ extension PopularActorsVC:UICollectionViewDelegate,UICollectionViewDataSource,UI
 
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        self.selectedId =  actors[indexPath.row]["id"] as?Int ?? 0
+        self.selectedName =  actors[indexPath.row]["name"] as?String ?? ""
         self.performSegue(withIdentifier: "Details", sender: nil)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: UIScreen.main.bounds.width / 2.28, height: UIScreen.main.bounds.width / 2.28)
+        return CGSize(width: UIScreen.main.bounds.width / 2.4, height: UIScreen.main.bounds.width / 2.4)
     }
 }
 

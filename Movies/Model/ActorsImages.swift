@@ -8,10 +8,26 @@
 
 import Foundation
 import UIKit
+import ObjectMapper
 
-struct ActorImages: Codable {
-    let width, height, voteCount: Int
-    let voteAverage: Double
-    let filePath: String
-    let aspectRatio: Double
+struct ActorImages: Mappable {
+    var profiles : [Image]?
+    
+    init?(map: Map) {}
+    
+    mutating func mapping(map: Map) {
+        self.profiles <- map["profiles"]
+     }
 }
+
+struct Image: Mappable {
+     var filePath: String?
+ 
+    init?(map: Map) {}
+    
+    mutating func mapping(map: Map) {
+        self.filePath <- map["file_path"]
+    }
+}
+
+
